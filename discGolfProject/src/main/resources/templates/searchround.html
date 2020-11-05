@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Search round</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" />
+</head>
+<body class="font-italic p-3 mb-2 text-light bg-dark">
+
+	<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/roundlist">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Search rounds / Logged in as [[${#httpServletRequest.remoteUser}]]</li>
+  </ol>
+</nav>
+
+
+<div class="col-md-4" style="padding:20px 0">
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+		</div>
+		
+		<div class="container-fluid">
+
+		<form action="/search" class="form-inline">
+	        <div class="form-group mb-2">
+	         <input type="text" class="form-control" name="name" placeholder="Search player" />
+	         <input type="submit" value="Search"  class="btn btn-primary"/>
+	        </div>
+	     </form>
+
+	</div>
+		
+		
+	<div>
+		<table class="rounded table table-dark table-sm">
+			<tr>
+				<th>Player</th>
+				<th>Story</th>
+				<th>Score</th>
+				<th>Track</th>
+			</tr>
+			
+			<tr th:each="round : ${players}">
+
+				<td th:text="${round.player}"></td>
+				<td th:text="${round.story}"></td>
+				<td th:text="${round.score}"></td>
+				<td th:text="${round.track.name}"></td>
+			</tr>
+		</table>
+		
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add round</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body class="font-weight-normal font-italic p-3 mb-2 bg-dark text-light">
+	<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/roundlist">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add rounds / Logged in as [[${#httpServletRequest.remoteUser}]]</li>
+  </ol>
+</nav>
+<br>
+	<div class="container-fluid">
+
+		<form th:object="${round}" th:action="@{save}" action="#" method="post">
+
+			<label for="exampleInputStory">Enter story: </label><input type="text" id="story" th:field="*{story}" /> <br>
+			<label for="exampleInputPlayer">Enter player: </label><input type="text" id="player" th:field="*{player}" /> <br>
+			<label for="exampleInputScore">Enter total score: </label><input type="text" id="score" th:field="*{score}" /> <br>
+			<label for="exampleInputTrack">Choose track: </label><select id="tracklist" th:field="*{track}" class="form-control form-control-sm">
+       			<option th:each="track: ${tracks}" th:value="${track.trackid}" th:text="${track.name}"></option>
+    		</select>
+    		<br>
+			<input class="btn btn-success" type="submit" value="Save"></input>
+			</form>
+
+	</div>
+</body>
+</html>

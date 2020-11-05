@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Round list</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" />
+</head>
+<body class="font-italic p-3 mb-2 text-light bg-dark">
+
+	<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="/roundlist">Home / Logged in as [[${#httpServletRequest.remoteUser}]]</li>
+  </ol>
+</nav>
+
+
+<div class="col-md-4" style="padding:20px 0">
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+		</div>
+		<div class="col-md-4" style="padding:20px 0">
+		<a class="btn btn-warning" href="/searchround">Search round by player</a>
+		</div>
+	<div>
+		<table class="rounded table table-dark table-sm">
+
+
+			<tr>
+				<th>Player</th>
+				<th>Story</th>
+				<th>Score</th>
+				<th>Track</th>
+				<th>Perfect score</th>
+
+			</tr>
+
+
+
+			<tr th:each="round : ${rounds}">
+
+				<td th:text="${round.player}"></td>
+				<td th:text="${round.story}"></td>
+				<td th:text="${round.score}"></td>
+				<td th:text="${round.track.name}"></td>
+				<td th:text="${round.track.trackPerfectScore}"></td>
+				
+				<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${round.id})}" class="btn btn-xs btn-danger">Delete round</a></td>
+				<td><a class="btn btn-success"
+					th:href="@{/editround/{id}(id=${round.id})}">Edit round</a></td>
+				<td><a class="btn btn-warning"
+					th:href="@{/round/{id}(id=${round.id})}">Round in JSON</a></td>
+			</tr>
+
+
+
+		</table>
+		<a class="btn btn-warning" href="/rounds">Round list in JSON</a>
+		<a class="btn btn-success" href="/add">Add round</a>
+	</div>
+
+</body>
+</html>
