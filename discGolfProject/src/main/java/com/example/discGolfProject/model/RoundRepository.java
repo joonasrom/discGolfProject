@@ -15,6 +15,6 @@ public interface RoundRepository extends CrudRepository<Round, Long> {
     
     List<Round> findByPlayer(String player);
     
-    @Query(value = "SELECT * FROM Round r WHERE r.player LIKE %:searchword%", nativeQuery=true)
+    @Query(value = "SELECT * FROM Round r WHERE r.player ILIKE %:searchword%", nativeQuery=true)
     List<Round>findBySearchword(@Param("searchword") String searchword);
 }
