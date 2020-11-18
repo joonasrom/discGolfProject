@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+//User configurations
 @Entity
 @Table (name = "usertable")
 public class User {

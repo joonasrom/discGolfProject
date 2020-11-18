@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 
+
+//Track configurations
 @Entity
 public class Track {
 

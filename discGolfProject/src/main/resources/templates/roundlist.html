@@ -14,7 +14,6 @@
   </ol>
 </nav>
 
-
 <div class="col-md-4" style="padding:20px 0">
 		<form th:action="@{/logout}" method="post">
 			<input type="submit" value="Sign Out" class="btn btn-danger"/>
@@ -26,7 +25,6 @@
 	<div>
 		<table class="rounded table table-dark table-sm">
 
-
 			<tr>
 				<th>Player</th>
 				<th>Story</th>
@@ -35,8 +33,6 @@
 				<th>Perfect score</th>
 
 			</tr>
-
-
 
 			<tr th:each="round : ${rounds}">
 
@@ -52,8 +48,6 @@
 				<td><a class="btn btn-warning"
 					th:href="@{/round/{id}(id=${round.id})}">Round in JSON</a></td>
 			</tr>
-
-
 
 		</table>
 		<a class="btn btn-warning" href="/rounds">Round list in JSON</a>

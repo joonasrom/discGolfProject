@@ -20,9 +20,11 @@
 			<label for="exampleInputStory">Enter story: </label><input type="text" id="story" th:field="*{story}" /> <br>
 			<label for="exampleInputPlayer">Enter player: </label><input type="text" id="player" th:field="*{player}" /> <br>
 			<label for="exampleInputScore">Enter total score: </label><input type="text" id="score" th:field="*{score}" /> <br>
-			<label for="exampleInputTrack">Choose track: </label><select id="tracklist" th:field="*{track}" class="form-control form-control-sm">
+			<label for="exampleInputTrack">Choose track: </label>
+			<select id="tracklist" th:field="*{track}" class="form-control form-control-sm">
        			<option th:each="track: ${tracks}" th:value="${track.trackid}" th:text="${track.name}"></option>
     		</select>
+    		
     		<br>
 			<input class="btn btn-success" type="submit" value="Save"></input>
 			</form>

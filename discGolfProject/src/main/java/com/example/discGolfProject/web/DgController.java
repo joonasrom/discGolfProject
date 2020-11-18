@@ -26,10 +26,10 @@ public class DgController {
 
 	@Autowired
 	private TrackRepository trepository;
-	
+
 	@Autowired
 	private UserRepository urepository;
-	
+
 	@Autowired
 	private DgService dgservice;
 
@@ -38,8 +38,8 @@ public class DgController {
 		model.addAttribute("rounds", rrepository.findAll());
 		return "roundlist";
 	}
-	
-	//Delete round by round id. Only accessible in admin mode. 
+
+	// Delete round by round id. Only accessible in admin mode.
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -50,34 +50,36 @@ public class DgController {
 		return "redirect:../roundlist";
 	}
 
-	//Saves round on given informations to round list.
-	
+	// Saves round on given informations to round list.
+
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String save(Round round) {
 		rrepository.save(round);
 
 		return "redirect:roundlist";
 	}
-	
+
+	// Saves user on given informations to users.
 	@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
 	public String saveuser(User user) {
 		User exist = urepository.findByUsername((user.getUsername()));
-		
-		
-		if(exist == null) {
+
+		if (exist == null) {
 			urepository.save(user);
 			return "redirect:login";
 		} else {
-		return "redirect:adduser";
+			return "redirect:adduser";
 		}
 	}
+
+	//Sets signup to be ready for new user
 	@RequestMapping(value = "/adduser")
 	public String addUser(Model model) {
 		model.addAttribute("user", new User());
 		return "signup";
 	}
 
-	
+	//Sets addroung to be ready for new round
 	@RequestMapping(value = "/add")
 	public String addRound(Model model) {
 		model.addAttribute("round", new Round());
@@ -85,42 +87,42 @@ public class DgController {
 		return "addround";
 	}
 
+	//Sets editround to be ready to edit existing round by roundid.
 	@RequestMapping(value = "/editround/{id}", method = RequestMethod.GET)
 	public String addRound(@PathVariable("id") Long roundId, Model model) {
 		model.addAttribute("round", rrepository.findById(roundId));
 		model.addAttribute("tracks", trepository.findAll());
-		return "/editround";
+		return "editround";
 
 	}
-	
+
+	//Gets searchword and sets model to get all matching info
 	@RequestMapping(value = "/searchround{searchword}")
 	public String searchRound(Model model, String searchword) {
-		
-		if(searchword != null) {
+
+		if (searchword != null) {
 			model.addAttribute("rounds", dgservice.findBySearchword(searchword));
 		} else {
 			model.addAttribute("rounds", rrepository.findAll());
 		}
-		
+
 		return "searchround";
 	}
-	
 
-    @RequestMapping(value="/rounds", method = RequestMethod.GET)
-    public @ResponseBody List<Round> roundListRest() {	
-        return (List<Round>) rrepository.findAll();
-    }    
+	@RequestMapping(value = "/rounds", method = RequestMethod.GET)
+	public @ResponseBody List<Round> roundListRest() {
+		return (List<Round>) rrepository.findAll();
+	}
 
-	
-    @RequestMapping(value="/round/{id}", method = RequestMethod.GET)
-    public @ResponseBody Optional<Round> findroundRest(@PathVariable("id") Long id) {	
-    	return rrepository.findById(id);
-    }     
-    
-    @RequestMapping(value = "/login")
+	@RequestMapping(value = "/round/{id}", method = RequestMethod.GET)
+	public @ResponseBody Optional<Round> findroundRest(@PathVariable("id") Long id) {
+		return rrepository.findById(id);
+	}
+
+	//Login
+	@RequestMapping(value = "/login")
 	public String login() {
 		return "login";
 	}
-    
-    
+
 }
