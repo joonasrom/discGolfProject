@@ -109,20 +109,21 @@ public class DgController {
 		return "searchround";
 	}
 
-	@RequestMapping(value = "/rounds", method = RequestMethod.GET)
-	public @ResponseBody List<Round> roundListRest() {
-		return (List<Round>) rrepository.findAll();
-	}
+    @RequestMapping(value="/rounds", method = RequestMethod.GET)
+    public @ResponseBody List<Round> roundListRest() {	
+        return (List<Round>) rrepository.findAll();
+    }    
 
-	@RequestMapping(value = "/round/{id}", method = RequestMethod.GET)
-	public @ResponseBody Optional<Round> findroundRest(@PathVariable("id") Long id) {
-		return rrepository.findById(id);
-	}
-
-	//Login
-	@RequestMapping(value = "/login")
+	
+    @RequestMapping(value="/round/{id}", method = RequestMethod.GET)
+    public @ResponseBody Optional<Round> findroundRest(@PathVariable("id") Long id) {	
+    	return rrepository.findById(id);
+    }     
+    
+    @RequestMapping(value = "/login")
 	public String login() {
 		return "login";
 	}
-
+    
+    
 }
