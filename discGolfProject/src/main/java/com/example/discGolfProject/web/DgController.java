@@ -89,7 +89,7 @@ public class DgController {
 	public String addRound(@PathVariable("id") Long roundId, Model model) {
 		model.addAttribute("round", rrepository.findById(roundId));
 		model.addAttribute("tracks", trepository.findAll());
-		return "/editround";
+		return "editround";
 
 	}
 	
