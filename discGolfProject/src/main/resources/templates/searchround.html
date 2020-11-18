@@ -24,9 +24,9 @@
 		
 		<div class="container-fluid">
 
-		<form action="/search" class="form-inline">
+		<form action="/searchround" method="get" class="form-inline">
 	        <div class="form-group mb-2">
-	         <input type="text" class="form-control" name="name" placeholder="Search player" />
+	         <input type="text" class="form-control" name="searchword" placeholder="Search player" />
 	         <input type="submit" value="Search"  class="btn btn-primary"/>
 	        </div>
 	     </form>
@@ -43,7 +43,7 @@
 				<th>Track</th>
 			</tr>
 			
-			<tr th:each="round : ${players}">
+			<tr th:each="round : ${rounds}">
 
 				<td th:text="${round.player}"></td>
 				<td th:text="${round.story}"></td>

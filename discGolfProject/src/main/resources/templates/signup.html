@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Signup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body class="font-weight-normal font-italic p-3 mb-2 bg-dark text-light">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/login">Login</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Signup</li>
+  </ol>
+</nav>
+<h2>Please, fill required informations.</h2>
+
+
+<form th:object="${user}" th:action="@{saveuser}" action="#" method="post">
+			<br>
+			<label for="exampleInputPlayer">Enter username: </label><input type="text" id="username" th:field="*{username}" /> <br>
+			<label for="exampleInputEmail">Enter email: </label><input type="text" id="email" th:field="*{email}" /> <br>
+			<label for="exampleInputPassword">Enter bcrypted password: </label><input type="text" id="passwordHash" th:field="*{passwordHash}" /> <br>
+    		<label for="exampleInputRole">Enter role(USER or ADMIN): </label><input type="text" id="role" th:field="*{role}" /> <br>
+    		<br>
+    		<h4>To bcrypt you password go to this address and encrypt it-> <a href="https://bcrypt-generator.com/">BCRYPT</a></h4>
+			<h4>Note that you do NOT need to remember your bcrypted password after registering! </h4>
+			<br>
+			<h4>On success you return to login page otherwise username is allready taken.</h4>
+			<br>
+			<input class="btn btn-success" type="submit" value="Register"></input>
+			</form>
+			
+</body>
+</html>

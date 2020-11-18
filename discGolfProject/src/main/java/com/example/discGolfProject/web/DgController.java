@@ -10,13 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.discGolfProject.model.Round;
 import com.example.discGolfProject.model.RoundRepository;
 import com.example.discGolfProject.model.TrackRepository;
-
+import com.example.discGolfProject.model.User;
+import com.example.discGolfProject.model.UserRepository;
+import com.example.discGolfProject.service.DgService;
 
 @Controller
 public class DgController {
@@ -25,6 +26,12 @@ public class DgController {
 
 	@Autowired
 	private TrackRepository trepository;
+	
+	@Autowired
+	private UserRepository urepository;
+	
+	@Autowired
+	private DgService dgservice;
 
 	@RequestMapping(value = "/roundlist", method = RequestMethod.GET)
 	public String roundList(Model model) {
@@ -51,6 +58,24 @@ public class DgController {
 
 		return "redirect:roundlist";
 	}
+	
+	@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
+	public String saveuser(User user) {
+		User exist = urepository.findByUsername((user.getUsername()));
+		
+		
+		if(exist == null) {
+			urepository.save(user);
+			return "redirect:login";
+		} else {
+		return "redirect:adduser";
+		}
+	}
+	@RequestMapping(value = "/adduser")
+	public String addUser(Model model) {
+		model.addAttribute("user", new User());
+		return "signup";
+	}
 
 	
 	@RequestMapping(value = "/add")
@@ -64,10 +89,21 @@ public class DgController {
 	public String addRound(@PathVariable("id") Long roundId, Model model) {
 		model.addAttribute("round", rrepository.findById(roundId));
 		model.addAttribute("tracks", trepository.findAll());
-		return "editround";
+		return "/editround";
 
 	}
-
+	
+	@RequestMapping(value = "/searchround{searchword}")
+	public String searchRound(Model model, String searchword) {
+		
+		if(searchword != null) {
+			model.addAttribute("rounds", dgservice.findBySearchword(searchword));
+		} else {
+			model.addAttribute("rounds", rrepository.findAll());
+		}
+		
+		return "searchround";
+	}
 	
 
     @RequestMapping(value="/rounds", method = RequestMethod.GET)
@@ -81,10 +117,10 @@ public class DgController {
     	return rrepository.findById(id);
     }     
     
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String searchByPlayer(Model model, @RequestParam(defaultValue="") String name) {
-		model.addAttribute("players", trepository.findByName(name));
-		return "searchround";
-
+    @RequestMapping(value = "/login")
+	public String login() {
+		return "login";
 	}
+    
+    
 }

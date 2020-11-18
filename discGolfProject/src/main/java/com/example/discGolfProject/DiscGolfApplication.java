@@ -22,6 +22,10 @@ public class DiscGolfApplication {
 	@Bean
 	public CommandLineRunner categoryDemo(TrackRepository trepository, RoundRepository rrepository, UserRepository urepository) {
 		return (args) -> {
+			
+			trepository.deleteAll();
+			rrepository.deleteAll();
+			urepository.deleteAll();
 
 			Track t1 = new Track("Tuusulan urheilupuisto", 63);
 			Track t2 = new Track("Kellokosken frisbeegolf", 58);
