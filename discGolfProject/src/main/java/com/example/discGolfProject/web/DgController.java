@@ -69,7 +69,7 @@ public class DgController {
 	
 	
 	// Saves user on given informations to users.
-    		@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
+    		@RequestMapping(value = "saveuser", method = RequestMethod.POST)
     public String saveUser(@Valid @ModelAttribute("signupform") SignupForm signupForm, BindingResult bindingResult) {
         String emailTest = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         if (!bindingResult.hasErrors()) { 
@@ -83,7 +83,7 @@ public class DgController {
                 Matcher matcher = pattern.matcher(signupForm.getEmail());
                 if(!matcher.matches()) {
                     bindingResult.rejectValue("email", "err.email", "Email doesn't meet requirements");
-                    return "adduser";
+                    return "signup";
                 }
     
                 
@@ -99,24 +99,24 @@ public class DgController {
                 
                 else {
                     bindingResult.rejectValue("username", "err.username", "Username already exists");        
-                    return "adduser";                    
+                    return "signup";                    
                 }
             }
             
             else {
                 bindingResult.rejectValue("passwordCheck", "err.passCheck", "Passwords does not match");        
-                return "adduser";
+                return "signup";
             }
         }
         else {
-            return "adduser";
+            return "signup";
         }
         return "redirect:/login";        
     }
     		
 	
 	//Sets sign up to be ready for new user
-	@RequestMapping(value = "adduser")
+	@RequestMapping(value = "signup")
 	public String addUser(Model model) {
 		model.addAttribute("signupform", new SignupForm());
 		return "signup";
