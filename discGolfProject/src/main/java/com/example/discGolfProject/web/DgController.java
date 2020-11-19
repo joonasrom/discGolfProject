@@ -70,7 +70,7 @@ public class DgController {
 	
 	// Saves user on given informations to users.
     		@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
-    public String saveUser(@Valid @ModelAttribute("signupForm") SignupForm signupForm, BindingResult bindingResult) {
+    public String saveUser(@Valid @ModelAttribute("signupform") SignupForm signupForm, BindingResult bindingResult) {
         String emailTest = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         if (!bindingResult.hasErrors()) { 
             if (signupForm.getPassword().equals(signupForm.getPasswordCheck())) {   
