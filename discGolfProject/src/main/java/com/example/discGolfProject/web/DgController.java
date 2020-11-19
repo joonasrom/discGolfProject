@@ -83,7 +83,7 @@ public class DgController {
                 Matcher matcher = pattern.matcher(signupForm.getEmail());
                 if(!matcher.matches()) {
                     bindingResult.rejectValue("email", "err.email", "Email doesn't meet requirements");
-                    return "adduser";
+                    return "/adduser";
                 }
     
                 
@@ -99,17 +99,17 @@ public class DgController {
                 
                 else {
                     bindingResult.rejectValue("username", "err.username", "Username already exists");        
-                    return "adduser";                    
+                    return "/adduser";                    
                 }
             }
             
             else {
                 bindingResult.rejectValue("passwordCheck", "err.passCheck", "Passwords does not match");        
-                return "adduser";
+                return "/adduser";
             }
         }
         else {
-            return "adduser";
+            return "/adduser";
         }
         return "redirect:/login";        
     }
