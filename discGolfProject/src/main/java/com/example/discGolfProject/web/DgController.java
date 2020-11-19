@@ -2,11 +2,18 @@ package com.example.discGolfProject.web;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +25,7 @@ import com.example.discGolfProject.model.TrackRepository;
 import com.example.discGolfProject.model.User;
 import com.example.discGolfProject.model.UserRepository;
 import com.example.discGolfProject.service.DgService;
+import com.example.discGolfProject.model.SignupForm;
 
 @Controller
 public class DgController {
@@ -59,24 +67,58 @@ public class DgController {
 		return "redirect:roundlist";
 	}
 	
+	
 	// Saves user on given informations to users.
-	@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
-	public String saveuser(User user) {
-		User exist = urepository.findByUsername((user.getUsername()));
-		
-		
-		if(exist == null) {
-			urepository.save(user);
-			return "redirect:login";
-		} else {
-		return "redirect:adduser";
-		}
-	}
+    		@RequestMapping(value = "saveuser", method = RequestMethod.POST)
+    public String saveUser(@Valid @ModelAttribute("signupForm") SignupForm signupForm, BindingResult bindingResult) {
+        String emailTest = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        if (!bindingResult.hasErrors()) { 
+            if (signupForm.getPassword().equals(signupForm.getPasswordCheck())) {   
+            	
+                String pwd = signupForm.getPassword();
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String encodedPwd = encoder.encode(pwd);
+                
+                Pattern pattern = Pattern.compile(emailTest);
+                Matcher matcher = pattern.matcher(signupForm.getEmail());
+                if(!matcher.matches()) {
+                    bindingResult.rejectValue("email", "err.email", "Email doesn't meet requirements");
+                    return "adduser";
+                }
+    
+                
+                User userToAdd = new User();
+                userToAdd.setPasswordHash(encodedPwd);
+                userToAdd.setUsername(signupForm.getUsername());
+                userToAdd.setEmail(signupForm.getEmail());
+                userToAdd.setRole("USER");
+                
+                if (urepository.findByUsername(signupForm.getUsername()) == null) {
+                    urepository.save(userToAdd);
+                }
+                
+                else {
+                    bindingResult.rejectValue("username", "err.username", "Username already exists");        
+                    return "adduser";                    
+                }
+            }
+            
+            else {
+                bindingResult.rejectValue("passwordCheck", "err.passCheck", "Passwords does not match");        
+                return "adduser";
+            }
+        }
+        else {
+            return "register";
+        }
+        return "redirect:/login";        
+    }
+    		
 	
 	//Sets sign up to be ready for new user
 	@RequestMapping(value = "/adduser")
 	public String addUser(Model model) {
-		model.addAttribute("user", new User());
+		model.addAttribute("signupform", new SignupForm());
 		return "signup";
 	}
 
